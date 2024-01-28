@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './App.css'
 
 function App() {
-let [counter,setCounter]= useState(15)
+const [counter,setCounter]= useState(15)
 // let [counter,hiteshCounter]= useState(15)
  
 
@@ -13,7 +13,15 @@ let [counter,setCounter]= useState(15)
   // console.log(counter)
   // setCounter(counter)
   if(counter<=19){
+    /* setCounter(counter+1)
     setCounter(counter+1)
+    setCounter(counter+1)
+    setCounter(counter+1) */
+
+    setCounter((prevConter)=>{return prevConter+1})
+    setCounter((prevConter)=> prevConter+1)
+    setCounter(prevConter=> prevConter+1)
+    setCounter(prevConter=> prevConter+1)
   }
 
   // hiteshCounter(counter+1)
