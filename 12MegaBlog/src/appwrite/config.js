@@ -1,6 +1,6 @@
 import conf from "../conf/conf";
 
-import {Account,ID, Client,Databases,Storage,Query} from 'appwrite';
+import {ID, Client,Databases,Storage,Query} from 'appwrite';
 
 export class Service{
     client = new Client();
@@ -69,12 +69,12 @@ export class Service{
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
-                [
+                
                     queries
-                ]
+                
             )
         } catch (error) {
-            console.log("Appwrite serive :: getPost :: error",error)
+            console.log("Appwrite serive :: getPosts :: error",error)
             return false
             
         }
@@ -108,4 +108,4 @@ export class Service{
 }
 
 const service = new Service()
-export default service()
+export default service

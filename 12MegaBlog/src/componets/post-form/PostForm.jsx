@@ -1,6 +1,6 @@
 import React,{useCallback} from 'react'
 import {useForm} from 'react-hook-form'
-import {Button,Input,Select,} from '../index'
+import {Button,Input,Select,RTE} from '../index'
 import appwriteService from "../../appwrite/config"
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -10,14 +10,14 @@ function PostForm({post}) {
   const {register,handleSubmit,watch,setValue,control,getValues} = useForm({
     defaultValues:{
       title:post?.title||'',
-      slug:post?.slug||'',
+      slug:post?.$id||'',
       content:post?.content||'',
       status:post?.status||'active',
     }
   })
 
   const navigate = useNavigate()
-  const userData = useSelector(state=>state.user.userData)
+  const userData = useSelector((state)=>state.auth.userData)
   
   const submit = async (data)=>{
     if(post){
@@ -40,13 +40,13 @@ function PostForm({post}) {
     else{
       const file = data.image[0]?await appwriteService.uploadFile(data.image[0]):null
       if(file){
-        const fileId = file.$id
-        data.featuredImage=fileId
+        const fileId = file.$id;
+        data.featuredImage=fileId;
 
        const dbPost=  await appwriteService.createPost({
           ...data,
           userId:userData.$id
-        })
+        });
 
         if(dbPost){
           navigate(`/post/${dbPost.$id}`)
@@ -59,17 +59,17 @@ function PostForm({post}) {
   const slugTransform = useCallback((value)=>{
     if(value && typeof value === "string")
       return value
-            .trim()
-            .toLowerCase()
-            .replace(/^[a-zA-Z\d\s]+/g,'-')
-            .replace(/\s/g,'-')
-      return ''
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-zA-Z\d\s]+/g, "-")
+      .replace(/\s/g, "-");
+      return "";
   },[])
 
   React.useEffect(()=>{
     const subscription = watch((value,{name})=>{
-      if(name===title){
-        setValue('slug',slugTransform(value.title,{shouldValidate:true}))
+      if(name==="title"){
+        setValue("slug",slugTransform(value.title),{shouldValidate:true});
       }
     })
 

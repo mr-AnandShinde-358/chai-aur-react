@@ -9,6 +9,8 @@ import Footer from './componets/Footer/Footer'
 import Header from './componets/Header/Header'
 import { Outlet } from 'react-router-dom'
 
+
+
 function App() {
 
   const [loading,setLoading] =useState(true);
